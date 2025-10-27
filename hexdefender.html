@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexdefender | Next-Gen Cyber Defense</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0afbff; /* Cyan Neon */
+            --secondary: #ff2d75; /* Pink Accent */
+            --dark: #0a0e17; /* Dark Blue-Black */
+            --darker: #05080f; /* Deepest Black */
+            --light: #ccd6f6; /* Light Text */
+            --accent: #00ff88; /* Green Accent (used minimally) */
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-attachment: fixed;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(10, 251, 255, 0.5);
+        }
+
+        .neon-text {
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(10, 251, 255, 0.5);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            background: rgba(5, 8, 15, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
+
+        /* Hero Section Styling (Updated to two-column) */
+        .hero-flex-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 50px;
+            min-height: 80vh; /* Ensure enough height for visualization */
+        }
+
+        .hero-text-content {
+            width: 50%;
+            max-width: 550px;
+        }
+
+        .hero-text-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .hero-text-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--light);
+            text-align: left;
+        }
+        
+        .hero-buttons {
+             /* Keeps buttons aligned with text */
+            text-align: left;
+        }
+
+        .hero-visual {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Removed spinning hex animation and styles for new rotating cube */
+
+        /* Rotating Cube Container */
+        .cube-container {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            perspective: 1000px;
+            filter: drop-shadow(0 10px 20px rgba(10, 251, 255, 0.3));
+        }
+
+        /* Cube */
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateCube 20s linear infinite;
+        }
+
+        /* Cube Faces */
+        .cube-face {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border: 2px solid var(--primary);
+            box-shadow:
+                0 0 5px var(--primary),
+                inset 0 0 15px var(--primary);
+            background: linear-gradient(145deg, rgba(5, 8, 15, 0.8), rgba(0, 255, 255, 0.1));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+            font-size: 4rem;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow:
+                0 0 5px var(--primary),
+                0 0 10px var(--primary),
+                0 0 15px var(--primary);
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+            border-radius: 6px;
+            opacity: 1;
+        }
+
+        /* Positioning Faces */
+        .face-front  { transform: translateZ(125px); }
+        .face-back   { transform: rotateY(180deg) translateZ(125px); }
+        .face-right  { transform: rotateY(90deg) translateZ(125px); }
+        .face-left   { transform: rotateY(-90deg) translateZ(125px); }
+        .face-top    { transform: rotateX(90deg) translateZ(125px); }
+        .face-bottom { transform: rotateX(-90deg) translateZ(125px); }
+
+        /* Cube Rotation Animation */
+        @keyframes rotateCube {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        /* Neon edges enhancement */
+        .cube-face::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            box-shadow:
+                0 0 8px var(--primary),
+                0 0 15px var(--primary),
+                inset 0 0 10px var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            margin-right: 15px; /* Added spacing between buttons */
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: var(--dark);
+        }
+
+        .btn:hover:before {
+            left: 0;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        .btn-secondary:before {
+            background: var(--secondary);
+        }
+        /* End of Hero Specific Styling */
+
+
+        /* About/Feature Cards */
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 8px;
+            transition: var(--transition);
+            border-left: 3px solid var(--primary);
+            box-shadow: 0 0 10px rgba(10, 251, 255, 0.1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(10, 251, 255, 0.3);
+            border-left: 3px solid var(--secondary);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .service-card i {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Doctrine Points */
+        .doctrine-point {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(10, 251, 255, 0.1);
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .doctrine-point:hover {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(10, 251, 255, 0.4);
+        }
+        
+        .doctrine-point h3 {
+            color: var(--secondary);
+            font-size: 1.8rem;
+        }
+
+        /* Adversary Sim Terminal */
+        .terminal-panel {
+            background: var(--darker);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 45, 117, 0.5);
+            border: 1px solid var(--secondary);
+        }
+        
+        .terminal-panel pre {
+            background: var(--dark);
+            border: 1px solid rgba(255, 45, 117, 0.3);
+            color: var(--accent);
+            padding: 10px;
+            overflow: auto;
+            border-radius: 4px;
+            font-family: monospace;
+            height: 150px;
+        }
+        
+        .terminal-panel .status {
+            color: var(--secondary);
+            font-family: monospace;
+            margin-bottom: 5px;
+        }
+
+        /* Contact Form */
+        .contact-form-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(10, 251, 255, 0.3);
+            border: 1px solid var(--primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: var(--light);
+            font-family: 'Exo 2', sans-serif;
+            transition: var(--transition);
+            margin-top: 5px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(10, 251, 255, 0.5);
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 50px 0 20px;
+            text-align: center;
+            border-top: 1px solid rgba(10, 251, 255, 0.1);
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+            margin: 0 10px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Utility classes for layout */
+        .grid-cols-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+        .grid-cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+        .flex-row { display: flex; flex-direction: row; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .space-y-12 > * + * { margin-top: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-8 { margin-top: 2rem; }
+        .w-full { width: 100%; }
+        .text-center { text-align: center; }
+
+
+        /* Responsive adjustments for two-column hero */
+        @media (max-width: 992px) {
+            .hero-flex-container {
+                flex-direction: row;
+                text-align: left;
+                min-height: auto;
+                align-items: center;
+            }
+            .hero-text-content {
+                width: 50%;
+                margin-right: 20px;
+            }
+            .hero-text-content h1 {
+                font-size: 2.5rem;
+                text-align: left;
+            }
+            .hero-text-content p {
+                font-size: 1rem;
+                text-align: left;
+            }
+            .hero-buttons {
+                text-align: left;
+            }
+            .hero-visual {
+                width: 40%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .cube-container {
+                width: 250px;
+                height: 250px;
+            }
+            .cube-face {
+                width: 250px;
+                height: 250px;
+            }
+            .cube-face::before {
+                width: 250px;
+                height: 250px;
+            }
+            .grid-cols-3 { grid-template-columns: 1fr; }
+            .grid-cols-2 { grid-template-columns: 1fr; }
+            .flex-row { flex-direction: column; }
+            .doctrine-point > div { margin-bottom: 20px; }
+            .doctrine-point > div:last-child { padding-left: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-flex-container {
+                flex-direction: column;
+                text-align: center;
+                min-height: auto;
+                align-items: center;
+            }
+            .hero-text-content {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 60px;
+            }
+            .hero-text-content h1 {
+                font-size: 2rem;
+                text-align: center;
+            }
+            .hero-text-content p {
+                font-size: 1rem;
+                text-align: center;
+            }
+            .hero-buttons {
+                text-align: center;
+            }
+            .hero-visual {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .cube-container {
+                width: 200px;
+                height: 200px;
+            }
+            .cube-face {
+                width: 200px;
+                height: 200px;
+                font-size: 3rem;
+            }
+            .cube-face::before {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        .menu-toggle { display: none; }
+        
+        .fade-in-up { opacity: 1; transform: none; transition: none; }
+    </style>
+</head>
+<body>
+    
+    <svg id="hexdefender-logo" class="hidden" width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 0L87.5 25V75L50 100L12.5 75V25L50 0Z" fill="url(#mainGradient)"/>
+        <path d="M50 10L82.5 30V70L50 90L17.5 70V30L50 10Z" fill="#0a0e17"/>
+        <path d="M50 35L67.5 45L50 55L32.5 45L50 35Z" fill="#0afbff"/>
+        <defs>
+            <linearGradient id="mainGradient" x1="50" y1="0" x2="50" y2="100" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0e7490"/>
+                <stop offset="1" stop-color="#0afbff"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <canvas class="matrix-bg" id="matrixBg"></canvas>
+
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo" style="display: flex; align-items: center;">
+                <img src="ef78.jpg" alt="Hexdefender Logo" style="height: 32px; width: auto; margin-right: 8px;">
+                Hexdefender
+            </a>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#doctrine">Doctrine</a></li>
+                <li><a href="#adversary-sim">Adversary Sim</a></li>
+                <li><a href="#infra-intel">Intelligence</a></li>
+                <li><a href="#training">Training</a></li>
+                <li><a href="#contact" class="btn btn-secondary" style="margin-left: 20px;">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="mt-16">
+        <section id="hero" class="section-padding">
+            <div class="container hero-flex-container">
+                
+                <div class="hero-text-content">
+                    <h1 class="font-black">
+                        <span class="neon-text">FORTIFY</span> <br> YOUR DIGITAL FRONTLINE
+                    </h1>
+                    <p>
+                        Next-Generation Cyber Defense Solutions. 
+                        <br>
+                        <b>Predictive. Proactive. Powerful.</b>
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#doctrine" class="btn">View The Doctrine</a>
+                        <a href="#adversary-sim" class="btn btn-secondary">Run a Sim</a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                <div class="cube-container">
+                    <div class="cube">
+                        <div class="cube-face face-front"><i class="fas fa-network-wired"></i></div>
+                        <div class="cube-face face-back"><i class="fas fa-lock"></i></div>
+                        <div class="cube-face face-right"><i class="fas fa-bug"></i></div>
+                        <div class="cube-face face-left"><i class="fas fa-shield-alt"></i></div>
+                        <div class="cube-face face-top"><i class="fas fa-code"></i></div>
+                        <div class="cube-face face-bottom"><i class="fas fa-server"></i></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section-padding" style="background: rgba(5, 8, 15, 0.7);">
+            <div class="container">
+                <h2 class="text-center mb-16">About <span class="neon-text">Hexdefender</span></h2>
+                <p class="text-center mb-16" style="max-width: 800px; margin-left: auto; margin-right: auto; font-size: 1.1rem;">
+                    We are an elite collective dedicated to stopping advanced persistent threats (APTs) through technological superiority and strategic defense.
+                </p>
+
+                <div class="grid-cols-3">
+                    <div class="service-card">
+                        <i class="fas fa-satellite-dish"></i>
+                        <h3>Threat Synthesis</h3>
+                        <p>Our engines constantly ingest, process, and correlate global threat intelligence to build proactive defense models.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3>Adaptive Resilience</h3>
+                        <p>Systems are designed to actively shift configuration and isolate compromise immediately upon detection.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>High-Impact Audits</h3>
+                        <p>We prioritize vulnerabilities based on real-world exploitability, not just theoretical severity scores.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="doctrine" class="section-padding">
+            <div class="container">
+                <h2 class="text-center mb-16">The Hexdefender <span class="neon-text">Doctrine</span></h2>
+                
+                <div class="space-y-12">
+                    <div class="doctrine-point flex-row items-center">
+                        <div style="flex: 1;">
+                            <span class="text-5xl font-black neon-text block mb-2">01.</span>
+                            <h3>Shifting Left</h3>
+                            <p style="font-size: 1.1rem; color: var(--secondary);">Anticipate and Neutralize</p>
+                        </div>
+                        <div style="flex: 2; padding-left: 40px; color: var(--light);">
+                            <p>
+                                Security is enforced at the earliest possible stage—development, architecture, and threat modeling—moving countermeasures to the **left of the attack timeline**. We reduce the available window for compromise to zero.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="doctrine-point flex-row items-center">
+                        <div style="flex: 1;">
+                            <span class="text-5xl font-black neon-text block mb-2">02.</span>
+                            <h3>Dynamic Isolation</h3>
+                            <p style="font-size: 1.1rem; color: var(--secondary);">Containment is Instant</p>
+                        </div>
+                        <div style="flex: 2; padding-left: 40px; color: var(--light);">
+                            <p>
+                                Using **micro-segmentation** and policy-as-code, we ensure that every critical asset is dynamically isolated. If one point fails, the infection is contained instantly, preventing lateral movement and minimizing blast radius.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="adversary-sim" class="section-padding" style="background: rgba(5, 8, 15, 0.7);">
+            <div class="container">
+                <h2 class="text-center mb-16">High-Fidelity <span class="neon-text">Adversary Sim</span></h2>
+
+                <div class="flex-row items-center" style="gap: 40px;">
+                    <div style="flex: 1; margin-bottom: 30px;">
+                        <div class="terminal-panel">
+                            <p class="status">&gt; STARTING EMULATION [APT-34]...</p>
+                            <pre class="text-xs">
+[STATUS] MOCK PHISHING ATTEMPT INITIATED
+[ACCESS] INITIAL SHELL ESTABLISHED: 10.1.1.14
+[DETECT] FAILED. EDR LOGIC BYPASSED (TTP-004A)
+[ACTION] ATTEMPTING LATERAL MOVEMENT...
+[STATUS] PIVOT SUCCESSFUL TO DOMAIN CONTROLLER
+[RESULT] BREACH DEPTH: CRITICAL (95%)
+[REPLAY] DEFENSIVE COUNTERMEASURE TEST INITIATED...
+                            </pre>
+                            <p class="status" style="color: var(--primary);">&gt; SIMULATION COMPLETE. RECOMMENDATION: REVIEW TTP-004A.</p>
+                        </div>
+                    </div>
+                    <div style="flex: 1;">
+                        <p style="color: var(--light); font-size: 1.1rem; margin-bottom: 25px;">
+                            We use live threat intelligence to build and execute customized scenarios based on the **MITRE ATT&CK** framework. Discover your defense gaps with precise, high-impact testing.
+                        </p>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li style="display: flex; align-items: flex-start; margin-bottom: 10px; color: var(--light);">
+                                <span style="color: var(--primary); margin-right: 10px; font-size: 1.2rem;">&raquo;</span>
+                                **Red Teaming:** Real-world, zero-knowledge attack simulation.
+                            </li>
+                            <li style="display: flex; align-items: flex-start; margin-bottom: 10px; color: var(--light);">
+                                <span style="color: var(--primary); margin-right: 10px; font-size: 1.2rem;">&raquo;</span>
+                                **Purple Teaming:** On-site collaboration for immediate defense tuning.
+                            </li>
+                            <li style="display: flex; align-items: flex-start; margin-bottom: 10px; color: var(--light);">
+                                <span style="color: var(--primary); margin-right: 10px; font-size: 1.2rem;">&raquo;</span>
+                                **Continuous Monitoring:** Scheduled, automated emulation to test policy drift.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container grid-cols-2">
+                
+                <div id="infra-intel" class="service-card" style="border-top: 5px solid var(--primary); border-left: none;">
+                    <h2 style="font-size: 2rem; margin-bottom: 20px;"><span class="neon-text">Infrastructure Intelligence</span> & Exposure</h2>
+                    
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 30px;">
+                        <li style="display: flex; align-items: flex-start; margin-bottom: 15px; color: var(--light);">
+                            <i class="fas fa-check" style="color: var(--primary); margin-right: 15px; font-size: 1.1rem; margin-top: 3px;"></i>
+                            <p><strong>Digital Footprint:</strong> Discover shadow IT, forgotten assets, and attack surface expansion in real-time.</p>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; margin-bottom: 15px; color: var(--light);">
+                            <i class="fas fa-check" style="color: var(--primary); margin-right: 15px; font-size: 1.1rem; margin-top: 3px;"></i>
+                            <p><strong>Supply Chain Security:</strong> Vetting and continuous assessment of critical third-party vendors and dependencies.</p>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; margin-bottom: 15px; color: var(--light);">
+                            <i class="fas fa-check" style="color: var(--primary); margin-right: 15px; font-size: 1.1rem; margin-top: 3px;"></i>
+                            <p><strong>Cloud Posture Management:</strong> Automated audits for misconfigurations across AWS, Azure, and GCP.</p>
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn" style="padding: 10px 20px; font-size: 1rem; border-color: var(--secondary); color: var(--secondary);">
+                        Request a Free Exposure Report &rarr;
+                    </a>
+                </div>
+
+                <div id="training" class="service-card" style="border-top: 5px solid var(--primary); border-left: none;">
+                    <h2 style="font-size: 2rem; margin-bottom: 20px;">Elite Security <span class="neon-text">Training</span></h2>
+                    
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 30px;">
+                        <li style="display: flex; align-items: flex-start; margin-bottom: 15px; color: var(--light);">
+                            <i class="fas fa-check" style="color: var(--primary); margin-right: 15px; font-size: 1.1rem; margin-top: 3px;"></i>
+                            <p><strong>Blue Team Mastery:</strong> Hands-on, scenario-based training for advanced threat detection and forensics.</p>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; margin-bottom: 15px; color: var(--light);">
+                            <i class="fas fa-check" style="color: var(--primary); margin-right: 15px; font-size: 1.1rem; margin-top: 3px;"></i>
+                            <p><strong>Red Team Fundamentals:</strong> Ethical hacking courses focusing on modern exploit paths and evasion techniques.</p>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; margin-bottom: 15px; color: var(--light);">
+                            <i class="fas fa-check" style="color: var(--primary); margin-right: 15px; font-size: 1.1rem; margin-top: 3px;"></i>
+                            <p><strong>Executive Resilience:</strong> Non-technical sessions on cyber crisis management and board reporting.</p>
+                        </li>
+                    </ul>
+                    <a href="#contact" class="btn" style="padding: 10px 20px; font-size: 1rem; border-color: var(--secondary); color: var(--secondary);">
+                        Explore Training Catalog &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-padding" style="background: var(--darker);">
+            <div class="container" style="max-width: 600px;">
+                <div class="contact-form-container">
+                    <h2 class="text-center mb-8" style="font-size: 2.5rem;">Initiate <span class="neon-text">Contact</span></h2>
+                    <p class="text-center mb-8" style="color: var(--light);">
+                        Start your defense journey. Fill out the secure form below to schedule an initial strategic consultation.
+                    </p>
+
+                    <form class="space-y-6">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Work Email</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="security@company.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Challenge Summary</label>
+                            <textarea id="message" name="message" rows="4" class="form-input" placeholder="Tell us about the threats you're facing..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn w-full" style="border-color: var(--secondary); background: var(--secondary); color: var(--dark);">
+                            Submit Secure Request
+                        </button>
+                    </form>
+                    <div id="form-message" style="margin-top: 20px; text-align: center; color: var(--accent);"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<footer>
+    <div class="container flex-row justify-between items-center" style="flex-direction: row;">
+        <div class="mb-4">
+            <a href="#hero" class="logo" style="font-size: 1.5rem; justify-content: start;">
+                <i class="fas fa-shield-alt"></i>
+                HEXDEFENDER
+            </a>
+            <p class="copyright" style="margin-top: 10px;">&copy; 2024 Hexdefender. All Rights Reserved.</p>
+        </div>
+        
+        <div class="footer-links">
+            <a href="#about">About</a>
+            <a href="#doctrine">Doctrine</a>
+            <a href="#training">Careers</a>
+            <a href="#contact">Privacy Policy</a>
+        </div>
+    </div>
+</footer>
+
+
+    <script>
+        // Matrix Background Script
+        const canvas = document.getElementById('matrixBg');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let letters = '01010101010101010101010101010101ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$#@%?!*&';
+        letters = letters.split('');
+        
+        const fontSize = 12;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        for(let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(5, 8, 15, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = 'rgba(10, 251, 255, 0.15)'; // even dimmer cyan
+            ctx.font = `${fontSize}px Orbitron`;
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 33);
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                const headerHeight = 70; // Adjusted for fixed header
+                
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - headerHeight,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Close mobile menu after click
+                const navMenu = document.getElementById('navMenu');
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        if(menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+        }
+        
+        // Responsive canvas
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Contact Form Submission (Mock)
+        const contactForm = document.querySelector('#contact form');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            formMessage.innerHTML = 'Secure Request **Submitted**. We will be in touch shortly.';
+            formMessage.style.color = 'var(--accent)';
+            formMessage.style.textShadow = '0 0 5px rgba(0, 255, 136, 0.5)';
+            contactForm.reset();
+
+            setTimeout(() => {
+                formMessage.innerHTML = '';
+            }, 7000);
+        });
+    </script>
+    <style>
+        #matrixBg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background-color: transparent;
+        }
+    </style>
+
+</body>
+</html>
